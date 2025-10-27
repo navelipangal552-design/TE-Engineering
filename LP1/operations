@@ -1,0 +1,8 @@
+navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$sum:"$price"}}}]);
+[ { _id: 'electronic', totalsale: 51000 } ]
+navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$avg:"$price"}}}]);
+[ { _id: 'electronic', totalsale: 25500 } ]
+navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$min:"$price"}}}]);
+[ { _id: 'electronic', totalsale: 6000 } ]
+navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$max:"$price"}}}]);
+[ { _id: 'electronic', totalsale: 45000 } ]
