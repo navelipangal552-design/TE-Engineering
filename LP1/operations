@@ -27,3 +27,10 @@ navelidb> db.sales.aggregate([ { $sort:{price:1}}]);
 ]
 navelidb> db.sales.aggregate([ { $count:"total"}]);
 [ { total: 2 } ]
+
+{
+  id: 1,
+  Movie_name: "Pathan",
+  rating: 4.2,
+  actors: ["Shah Rukh Khan"]
+}
