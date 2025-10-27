@@ -6,3 +6,24 @@ navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$min:"$pric
 [ { _id: 'electronic', totalsale: 6000 } ]
 navelidb> db.sales.aggregate([ { $group:{ _id:"$category",totalsale:{$max:"$price"}}}]);
 [ { _id: 'electronic', totalsale: 45000 } ]
+navelidb> db.sales.aggregate([ { $sort:{price:1}}]);
+[
+  {
+    _id: ObjectId('68ffa184a937ccfa52cebea8'),
+    id: '1',
+    product: 'laptop',
+    category: 'electronic',
+    price: 6000,
+    quantity: 3
+  },
+  {
+    _id: ObjectId('68ffa184a937ccfa52cebea9'),
+    id: 2,
+    product: 'smartphone',
+    category: 'electronic',
+    price: 45000,
+    quantity: 2
+  }
+]
+navelidb> db.sales.aggregate([ { $count:"total"}]);
+[ { total: 2 } ]
