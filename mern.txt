@@ -1,0 +1,52 @@
+chmod 400 cloud-key.pem
+
+ssh -i cloud-key.pem ubuntu@3.80.65.87
+
+sudo apt update
+
+sudo apt install nodejs npm -y
+
+
+launch instance
+name , ubuntu 
+
+Network settings
+
+ssh 
+custom tcp 3000 , 5000/5001 , 5173
+http
+https
+
+souce : anwhere
+
+Launch it
+
+temrninal:
+ls
+cloud-key.pem
+
+chmod 400 cloud-key.pem
+ssh -i cloud-key.pem ubuntu@IP_Public
+
+sudo apt update
+
+node -v
+npm -v
+
+sudo apt install git -y / git --version
+
+git clone https://...
+
+cd Event_Register
+ls
+
+cd backend
+npm install
+npm start
+
+frontend/ 
+
+npm install
+
+npm run dev -- --host 
+

@@ -1,0 +1,329 @@
+SalesForce:
+
+Username : navelipangal649.f59b7fccf36f@agentforce.com
+Password:
+
+Gear icon -> setup → Object Manager → Create → Custom Object
+Fill:
+Field	Value
+
+Label	Student
+Plural Label	Students
+Object Name	Student
+Record Name	Student Name
+
+tick :
+✅ Allow Reports
+✅ Allow Activities
+
+save.
+
+click Fields & Relationship -> New
+
+Select type :
+1) Number -> Next 
+Fill like this:
+
+Property	Value
+
+Field Label	: Roll No
+Length	:         5
+Decimal Places	0
+
+Then:
+Next → Next → Save
+
+2)Text
+
+Fill:
+
+Property	Value
+Field Label	:Class
+Length	20
+
+Save.
+
+3)Phone
+
+Fill:
+
+Property	Value
+Field Label	Mobile No
+
+Save.
+
+Go to Setup search: Tabs
+click New in Custom Object Tab
+
+choose Object -> Student
+       Tab Style -> color
+Next -> Next -> Save
+
+Open Develop Console:
+New -> File -> Apex Class -> write Student Controller
+
+public class StudentController 
+{
+    public Student__c stu {get; set;}
+    public List<Student__c> studentList {get; set;}
+    
+    public StudentController() //contructor
+    {
+        stu = new Student__c();
+        loadStudents();
+    }
+    public void saveStudent()
+    {
+        insert stu;
+        stu = new Student__c();
+        loadStudents();
+    }
+    public void loadStudents()
+    {
+        studentList = 
+           [
+               SELECT Id, Name , Roll_No__c , Class__c , Mobile_No__c 
+               FROM Student__c
+           ];
+    }
+}
+File -> Save
+
+File -> New -> Visualforce Page -> StudentPage
+
+<apex:page controller="StudentController">
+    <apex:form>
+        <apex:pageBlock title="Student Management">
+            
+            <apex:pageBlockSection columns="1">
+                <apex:inputText value="{!stu.Name}" label="Studen Name"/>
+                <apex:inputText value="{!stu.Class__c}" label="Class"/>
+                <apex:inputText value="{!stu.Roll_No__c}" label="Roll"/>
+                <apex:inputText value="{!stu.Mobile_No__c}" label="Mobible No"/>             
+            </apex:pageBlockSection>
+            
+             <apex:commandButton value="Save" action="{!saveStudent}" rerender="table"/>
+        
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Student Record" id="table">
+            <apex:pageBlockTable value="{!studentList}" var="s">
+                <apex:column value="{!s.Name}" headerValue="Name"/>
+                <apex:column value="{!s.Class__c}" headerValue="Class"/>
+                <apex:column value="{!s.Roll_No__c}" headerValue="Roll no"/>
+                <apex:column value="{!s.Mobile_No__c}" headerValue="Mobile"/>
+            </apex:pageBlockTable>
+         
+        </apex:pageBlock>
+        
+    </apex:form>
+</apex:page>
+
+Preview
+
+
+COnsole Based
+
+public class StudentConsole {
+    
+    public static void addStudent(String name, Integer roll , String studentClass , String mobile)
+    {
+        Student__c stu = new Student__c();
+        
+        stu.Name = name;
+        stu.Roll_No__c = roll;
+        stu.Class__c = studentClass;
+        stu.Mobile_No__c = mobile;
+        
+        insert stu;
+        
+        System.debug('Student added');
+    }
+    public static void show()
+    {
+        List<Student__c> studentList = 
+            [
+                SELECT Name , Roll_No__c , Class__c , Mobile_No__c 
+                FROM Student__c
+            ];
+        for(Student__c s: studentList)
+        {
+            System.debug('Name:'+s.Name);
+            System.debug('Roll No:'+s.Roll_No__c);
+            System.debug('Class:'+s.Class__c);
+            System.debug('Mobile No:'+s.Mobile_No__c);
+        }
+    }
+    public static void deleteStud(Integer roll)	
+    {
+        Student__c stu =
+            [
+                SELECT Id FROM Student__c WHERE Roll_No__c = :roll LIMIT 1
+            ];
+        delete stu;
+        System.debug('Deleted');
+        
+    }
+}
+Debug --> Open Anonymus.. --> open log --> exceute --> Deug Only
+
+For Employee Management :
+Create :
+Emp Id --> Number
+Email --> Email
+Birth date --> Date
+Department --> Text
+
+Bank_Account : 
+| Field       | Value        |
+| ----------- | ------------ |
+| Label       | Bank Account |
+| Object Name | Bank_Account |
+
+| Salesforce Field Type | Apex Datatype     |
+| --------------------- | ----------------- |
+| Number                | Integer  |
+| Text                  | String            |
+| Date                  | Date              |
+| Email                 | String            |
+| Phone                 | String            |
+
+public class EmployeeManagement
+{
+    // Add Employee
+    public static void addEmployee(Integer empId,
+                                   String name,
+                                   String email,
+                                   Date birthDate,
+                                   String dept)
+    {
+        Employee__c emp = new Employee__c();
+
+        emp.Name = name;
+        emp.Emp_ID__c = empId;
+        emp.Email__c = email;
+        emp.Birth_Date__c = birthDate;
+        emp.Department__c = dept;
+
+        insert emp;
+
+        System.debug('Employee Added Successfully');
+    }
+
+    // Display Employees
+    public static void showEmployees()
+    {
+        List<Employee__c> empList =
+        [
+            SELECT Name,
+                   Emp_ID__c,
+                   Email__c,
+                   Birth_Date__c,
+                   Department__c
+            FROM Employee__c
+        ];
+
+        for(Employee__c e : empList)
+        {
+           Print
+    }
+
+    // Delete Employee
+    public static void deleteEmployee(Integer empId)
+    {
+        Employee__c emp =
+        [
+            SELECT Id
+            FROM Employee__c
+            WHERE Emp_ID__c = :empId
+            LIMIT 1
+        ];
+
+        delete emp;
+
+        System.debug('Employee Deleted');
+    }
+}
+
+Date.newInstance(2000,5,10) 
+
+public void loadProducts()
+    {
+        productList =
+        [
+            SELECT Id,
+                   Name,
+                   Serial_No__c, (Number)
+                   Manufacture_Date__c, (Date)
+                   Expiry_Date__c (Date)
+            FROM Product_Inventory__c
+        ];
+    }
+   
+Email Sent:
+
+public class Email_Sent 
+{
+    public static void sendEmail()
+    {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        
+        String[] toAddress = new String[]
+        { 
+            'S24CE031@ms.pict.edu' 
+        };
+        
+        mail.setToAddresses(toAddress);
+        mail.setSubject('Salesforce Email Notification');
+        mail.setPlainTextBody(
+        'Hello,\n This is a test email sent'
+        );
+        
+        Messaging.sendEmail(
+            new Messaging.SingleEmailMessage[]{mail}
+        );
+        System.debug('Email sent Successfully');
+    }
+
+}
+
+Email Attachment:
+
+public class Email_Attachement 
+{
+     public static void sendEmail()
+    {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        
+        String[] toAddress = new String[]
+        { 
+            'S24CE031@ms.pict.edu' 
+        };
+        
+        mail.setToAddresses(toAddress);
+        mail.setSubject('Salesforce Email Notification');
+
+        mail.setPlainTextBody(
+        'Pls Find the Attachment'
+        );
+        
+        Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+        attachment.setFileName('sample.txt');
+        attachment.setBody(
+           Blob.valueOf('sample attachment') //keep this small
+        );
+        attachment.setContentType('text/plain');
+        
+        mail.setFileAttachments(
+          new Messaging.EmailFileAttachment[]{ attachment }
+        );
+        
+        
+        Messaging.sendEmail(
+            new Messaging.SingleEmailMessage[] { mail }
+        );
+        System.debug('Email sent Successfully');
+    }
+
+
+}

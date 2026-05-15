@@ -1,0 +1,172 @@
+public class Email_Sent 
+{
+    public static void sendEmail()
+    {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        
+        String[] toAddress = new String[]
+        { 
+            'S24CE031@ms.pict.edu' 
+        };
+        
+        mail.setToAddresses(toAddress);
+        mail.setSubject('Salesforce Email Notification');
+        mail.setPlainTextBody(
+        'Hello,\n This is a test email sent'
+        );
+        
+        Messaging.sendEmail(
+            new Messaging.SingleEmailMessage[]{mail}
+        );
+        System.debug('Email sent Successfully');
+    }
+
+}
+
+**
+public class Email_Attachement 
+{
+     public static void sendEmail()
+    {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        
+        String[] toAddress = new String[]
+        { 
+            'S24CE031@ms.pict.edu' 
+        };
+        
+        mail.setToAddresses(toAddress);
+        mail.setSubject('Salesforce Email Notification');
+
+        mail.setPlainTextBody(
+        'Pls Find the Attachment'
+        );
+        
+        Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+        attachment.setFileName('sample.txt');
+        attachment.setBody(
+           Blob.valueOf('sample attachment') //keep this small
+        );
+        attachment.setContentType('text/plain');
+        
+        mail.setFileAttachments(
+          new Messaging.EmailFileAttachment[]{ attachment }
+        );
+        
+        
+        Messaging.sendEmail(
+            new Messaging.SingleEmailMessage[] { mail }
+        );
+        System.debug('Email sent Successfully');
+    }
+
+
+}
+
+
+**
+public class EmailController 
+{
+    public String toAddress {get; set;}
+    public String subject {get; set;}
+    public String body {get; set;}
+
+    // Method to send email
+    public void sendEmail()
+    {
+        // Email Validation
+        if(toAddress == null || !toAddress.contains('@'))
+        {
+            ApexPages.addMessage(
+                new ApexPages.Message(
+                    ApexPages.Severity.ERROR,
+                    'Invalid Email ID'
+                )
+            );
+            return;
+        }
+
+        try
+        {
+            // Create Email Message
+            Messaging.SingleEmailMessage mail =
+                new Messaging.SingleEmailMessage();
+
+            mail.setToAddresses(
+                new String[] {toAddress}
+            );
+
+            mail.setSubject(subject);
+            mail.setPlainTextBody(body);
+
+            // Attachment
+            Messaging.EmailFileAttachment attachment =
+                new Messaging.EmailFileAttachment();
+
+            attachment.setFileName('Demo.txt');
+            attachment.setBody(
+                Blob.valueOf('This is attachment content')
+            );
+
+            mail.setFileAttachments(
+                new Messaging.EmailFileAttachment[] {attachment}
+            );
+
+            // Send Email
+            Messaging.sendEmail(
+                new Messaging.SingleEmailMessage[] {mail}
+            );
+
+            ApexPages.addMessage(
+                new ApexPages.Message(
+                    ApexPages.Severity.CONFIRM,
+                    'Email Sent Successfully'
+                )
+            );
+        }
+
+        catch(Exception e)
+        {
+            ApexPages.addMessage(
+                new ApexPages.Message(
+                    ApexPages.Severity.ERROR,
+                    e.getMessage()
+                )
+            );
+        }
+    }
+}
+
+<apex:page controller="EmailController">
+
+    <apex:form >
+
+        <apex:pageMessages />
+
+        <apex:pageBlock title="Send Email Notification">
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputText value="{!toAddress}"
+                    label="Recipient Email"/>
+
+                <apex:inputText value="{!subject}"
+                    label="Subject"/>
+
+                <apex:inputTextarea value="{!body}"
+                    label="Message Body"/>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockButtons >
+
+                <apex:commandButton value="Send Email"
+                    action="{!sendEmail}"/>
+
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>
