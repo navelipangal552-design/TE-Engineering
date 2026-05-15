@@ -1,0 +1,62 @@
+cloud_transfer
+
+
+Launch instance : VM1 , ubuntu 
+
+create key-value.pem
+Network settings 
+
+Security grp name : cloud -sg
+
+ssh , anywhere
+
+All traffic  , ANywhere
+
+launch instance
+
+
+VM2
+
+select key-value pair
+same security grp 
+
+lauch
+
+
+ls 
+mv cloud.pem.pem cloud.pem
+
+chmod 400 cloud-key.pem
+ssh -i cloud-key.pem ubunutu@Ip_public vm1
+
+ping Private _ IP VM2
+
+nano text.txt
+write
+
+Ctr+ O , ENter , Ctrl+ x
+
+scp test.txt ubuntu@Private_ip_VM2:/home/ubuntu
+scp cloud-key.pem test.txt ubuntu@Private_ip_VM2:/home/ubuntu
+
+
+NAother cmd
+
+ssh .. VM2 public
+
+ls 
+cat test.txt
+
+
+{
+"Version": "2012-10-17",
+ "Statement":[
+  {
+    "Sid":"PublicReadGetObject",
+    "Effect": "Allow",
+    "Principal":"*",
+    "Action":"s3:GetObject",
+    "Resource": ".../"
+}
+]
+}
